@@ -1,6 +1,6 @@
 // src/NotificheSidebar.tsx
 import { useEffect, useState } from "react";
-import { supabase } from "./supporto/supabaseClient";
+import { supabase } from "../supporto/supabaseClient";
 import { getNotificheUtente, type Notifica } from "./notificheUtils";
 
 export default function NotificheSidebar({

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import NotificheSidebar from "./NotificheSidebar";
-import { supabase } from "./supporto/supabaseClient";
+import { supabase } from "../supporto/supabaseClient";
 
 export default function NotificheBell() {
     const [open, setOpen] = useState(false);

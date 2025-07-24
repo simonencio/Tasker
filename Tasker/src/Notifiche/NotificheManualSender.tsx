@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "./supporto/supabaseClient";
+import { supabase } from "../supporto/supabaseClient";
 import { inviaNotifica } from "./notificheUtils";
 
 type NotificaTipo = {

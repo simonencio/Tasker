@@ -1,5 +1,6 @@
-// src/supporto/notificheUtils.ts
-import { supabase } from "./supporto/supabaseClient";
+import { supabase } from "../supporto/supabaseClient";
+import { inviaEmailNotifica } from "./emailUtils";
+import { generaContenutoEmail } from "./emailTemplates";
 
 export type Notifica = {
     id: string;
@@ -99,8 +100,31 @@ export async function inviaNotifica(
         });
 
         if (inviaEmail) {
-            // 🔜 Sostituire con invio reale email
-            console.log(`📧 Inviare email a utente ${userId} per notifica ${tipo_codice}`);
+            const { data: user } = await supabase
+                .from("utenti")
+                .select("email, nome, cognome")
+                .eq("id", userId)
+                .maybeSingle();
+
+            const { data: tipoDett } = await supabase
+                .from("notifiche_tipi")
+                .select("descrizione")
+                .eq("id", tipo_id)
+                .maybeSingle();
+
+            if (user?.email && tipoDett?.descrizione) {
+                const { subject, body } = generaContenutoEmail({
+                    nomeUtente: user.nome,
+                    descrizioneTipo: tipoDett.descrizione,
+                    messaggio,
+                });
+
+                await inviaEmailNotifica({
+                    to: user.email,
+                    subject,
+                    body,
+                });
+            }
         }
     }
 }

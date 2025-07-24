@@ -8,8 +8,9 @@ import {
 } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
 import ConfirmEmailWelcome from "./ConfirmEmailWelcome";
-import NotificheSidebar from "./NotificheSidebar";
-import NotificheManualSender from "./NotificheManualSender";
+import NotificheSidebar from "./Notifiche/NotificheSidebar";
+import NotificheManualSender from "./Notifiche/NotificheManualSender";
+import NotificationPreferencesSelector from "./Notifiche/NotificationPreferencesSelector";
 import { supabase } from "./supporto/supabaseClient";
 import "./App.css";
 import LoginForm from "./LoginForm";
@@ -55,6 +56,7 @@ export default function App() {
                     <nav className="bg-gray-100 p-4 flex gap-4 shadow border-b mt-14">
                         <Link to="/home" className="text-blue-600 hover:underline">🏠 Home</Link>
                         <Link to="/notifiche-manuali" className="text-blue-600 hover:underline">📨 Notifiche Manuali</Link>
+                        <Link to="/preferenze-notifiche" className="text-blue-600 hover:underline">📬 Preferenze Notifiche</Link>
                         <Link to="/register" className="text-blue-600 hover:underline">Registrati</Link>
                         <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
                     </nav>
@@ -68,6 +70,7 @@ export default function App() {
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/notifiche-manuali" element={<NotificheManualSender />} />
+                <Route path="/preferenze-notifiche" element={<NotificationPreferencesSelector />} />
             </Routes>
         </Router>
     );
