@@ -22,7 +22,11 @@ type Progetto = {
 type Task = {
     id: string;
     nome: string;
-    progetto_id: string;
+};
+
+type ProgettoTaskRel = {
+    progetti_id: string;
+    task_id: string;
 };
 
 export default function NotificheManualSender() {
@@ -30,6 +34,7 @@ export default function NotificheManualSender() {
     const [utenti, setUtenti] = useState<Utente[]>([]);
     const [progetti, setProgetti] = useState<Progetto[]>([]);
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [progettoTaskRel, setProgettoTaskRel] = useState<ProgettoTaskRel[]>([]);
 
     const [tipoCodice, setTipoCodice] = useState("");
     const [destinatari, setDestinatari] = useState<string[]>([]);
@@ -40,7 +45,10 @@ export default function NotificheManualSender() {
 
     const includeProgetto = tipoCodice.startsWith("PROGETTO_") || tipoCodice.startsWith("TASK_");
     const includeTask = tipoCodice.startsWith("TASK_");
-    const filteredTasks = tasks.filter((t) => t.progetto_id === progettoId);
+
+    const filteredTasks = tasks.filter((t) =>
+        progettoTaskRel.some((rel) => rel.progetti_id === progettoId && rel.task_id === t.id)
+    );
 
     useEffect(() => {
         supabase.from("notifiche_tipi").select("*").then(({ data, error }) => {
@@ -58,9 +66,14 @@ export default function NotificheManualSender() {
             if (error) console.error("Errore progetti:", error);
         });
 
-        supabase.from("tasks").select("id, nome, progetto_id").then(({ data, error }) => {
+        supabase.from("tasks").select("id, nome").then(({ data, error }) => {
             if (data) setTasks(data);
             if (error) console.error("Errore tasks:", error);
+        });
+
+        supabase.from("progetti_task").select("progetti_id, task_id").then(({ data, error }) => {
+            if (data) setProgettoTaskRel(data);
+            if (error) console.error("Errore relazioni progetti-task:", error);
         });
     }, []);
 
@@ -127,7 +140,6 @@ export default function NotificheManualSender() {
                 </select>
             </div>
 
-            {/* Lista destinatari selezionati */}
             {destinatari.length > 0 && (
                 <ul className="mb-4 space-y-1">
                     {destinatari.map((id) => {
@@ -147,7 +159,6 @@ export default function NotificheManualSender() {
                     })}
                 </ul>
             )}
-
 
             <label className="block text-sm font-semibold mb-1">Messaggio</label>
             <textarea

@@ -51,10 +51,12 @@ export default function App() {
                     </div>
                     <NotificheSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-                    {/* 📌 Menu navigazione */}
-                    <nav className="bg-gray-100 p-4 flex gap-4 shadow border-b">
+                    {/* 📌 Menu navigazione (solo da loggati) */}
+                    <nav className="bg-gray-100 p-4 flex gap-4 shadow border-b mt-14">
                         <Link to="/home" className="text-blue-600 hover:underline">🏠 Home</Link>
                         <Link to="/notifiche-manuali" className="text-blue-600 hover:underline">📨 Notifiche Manuali</Link>
+                        <Link to="/register" className="text-blue-600 hover:underline">Registrati</Link>
+                        <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
                     </nav>
                 </>
             )}
